@@ -1,0 +1,8 @@
+{
+  "name": "pap-due-backend",
+  "version": "1.0.0",
+  "description": "Backend pour générateur PAP/DUE - Vercel Function",
+  "dependencies": {
+    "docx": "^8.5.0"
+  }
+}
