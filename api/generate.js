@@ -43,21 +43,27 @@ module.exports = async (req, res) => {
 async function generateCompleteDocument(data) {
   const paragraphs = [];
   
-  // HEADER
+  
+    new Paragraph({
+      text: '–﻿Toutes les mentions entre tirets, comme dans cet exemple : –exemple–, sont des indications d’aide et doivent être supprimées.--',
+      spacing: { after: 100 }
+    }),
+
+// HEADER
   paragraphs.push(
     new Paragraph({
-      text: 'PROTOCOLE D\'ACCORD PRÉÉLECTORAL',
+      text: 'PROTOCOLE D\'ACCORD PRÉÉLECTORAL RELATIF À LA MISE EN PLACE DU COMITÉ SOCIAL ET ÉCONOMIQUE (CSE)',
       heading: HeadingLevel.HEADING_1,
       alignment: AlignmentType.CENTER,
       spacing: { before: 0, after: 120 }
     }),
     new Paragraph({
-      text: 'RELATIF À LA MISE EN PLACE',
+      text: '–OU (garder la mention qui correspond à votre situation) –',
       alignment: AlignmentType.CENTER,
       spacing: { after: 60 }
     }),
     new Paragraph({
-      text: 'DU COMITÉ SOCIAL ET ÉCONOMIQUE (CSE)',
+      text: 'DÉCISION UNILATÉRALE DE L’EMPLOYEUR (DUE) RELATIVE A LA MISE EN PLACE DU COMITE SOCIAL ET ÉCONOMIQUE (CSE)',
       alignment: AlignmentType.CENTER,
       spacing: { after: 400 }
     })
@@ -69,6 +75,14 @@ async function generateCompleteDocument(data) {
       text: 'ENTRE :',
       bold: true,
       spacing: { before: 200, after: 100 }
+    }),
+    new Paragraph({
+      children: [
+        new TextRun({ text: ` –(supprimer si c’est une DUE garder que le paragraphe ci-dessous)--` })
+      ],
+      spacing: { after: 200 }
+    })
+  );
     }),
     new Paragraph({
       children: [
