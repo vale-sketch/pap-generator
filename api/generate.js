@@ -77,9 +77,7 @@ async function generateCompleteDocument(data) {
       spacing: { before: 200, after: 100 }
     }),
     new Paragraph({
-      children: [
-        new TextRun({ text: ` –(supprimer si c’est une DUE garder que le paragraphe ci-dessous)--` })
-      ],
+      text: ` –(supprimer si c’est une DUE garder que le paragraphe ci-dessous)--`,
       spacing: { after: 200 }
     })
   );
