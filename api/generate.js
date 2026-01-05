@@ -160,12 +160,11 @@ async function generateCompleteDocument(data) {
       );
       
       // CORRECCIÓN 3: Agregar información del representante sindical
-      if (s.representante_prenom && s.representante_nom) {
+      if (s.representante && s.representante.trim()) {
         paragraphs.push(
           new Paragraph({
             children: [
-              new TextRun({ font: 'Roboto', text: `   ${s.representante_prenom} ${s.representante_nom}` }),
-              new TextRun({ font: 'Roboto', text: ' en sa qualité de représentant(e) syndical(e)', italics: true })
+              new TextRun({ font: 'Roboto', text: `   ${s.representante} en sa qualité de représentant(e) syndical(e)` })
             ],
             spacing: { left: 360 }
           })
@@ -207,19 +206,19 @@ async function generateCompleteDocument(data) {
     }),
     new Paragraph({
       children: [
-        new TextRun({ font: 'Roboto', text: '—Si DUE, garder le paragraphe ci-dessous et rajouter la négation.—',
-                    italics: true
-        })
-      ],
-      spacing: { after: 100 }
-    }),
-    new Paragraph({
-      children: [
         new TextRun({ font: 'Roboto', text: 'Les autres Organisations syndicales intéressées ont été informées de l\'organisation des élections et invitées à négocier le protocole d\'accord préélectoral par voie d\'affichage dans les locaux de la société ' }),
         new TextRun({ font: 'Roboto', text: data.nom_entreprise || '', bold: true }),
         new TextRun({ font: 'Roboto', text: ' le ' }),
         new TextRun({ font: 'Roboto', text: data.date_invitation_os || '', bold: true }),
         new TextRun({ font: 'Roboto', text: '.' })
+      ],
+      spacing: { after: 100 }
+    }),
+        new Paragraph({
+      children: [
+        new TextRun({ font: 'Roboto', text: '—Si DUE, garder le paragraphe ci-dessous et rajouter la négation.—',
+                    italics: true
+        })
       ],
       spacing: { after: 100 }
     }),
