@@ -46,6 +46,11 @@ async function generateCompleteDocument(data) {
   // HEADER
   paragraphs.push(
     new Paragraph({
+      text: '–﻿Toutes les mentions entre tirets, comme dans cet exemple : –exemple–, sont des indications d\'aide et doivent être supprimées.–',
+      italics: true,
+      spacing: { before: 0, after: 200 }
+    }),
+    new Paragraph({
       text: 'PROTOCOLE D\'ACCORD PRÉÉLECTORAL',
       heading: HeadingLevel.HEADING_1,
       alignment: AlignmentType.CENTER,
@@ -59,12 +64,39 @@ async function generateCompleteDocument(data) {
     new Paragraph({
       text: 'DU COMITÉ SOCIAL ET ÉCONOMIQUE (CSE)',
       alignment: AlignmentType.CENTER,
+      spacing: { after: 200 }
+    }),
+    new Paragraph({
+      text: '–OU (garder la mention qui correspond à votre situation) –',
+      alignment: AlignmentType.CENTER,
+      italics: true,
+      spacing: { after: 120 }
+    }),
+    new Paragraph({
+      text: 'DÉCISION UNILATÉRALE DE L\'EMPLOYEUR (DUE)',
+      heading: HeadingLevel.HEADING_1,
+      alignment: AlignmentType.CENTER,
+      spacing: { after: 120 }
+    }),
+    new Paragraph({
+      text: 'RELATIVE À LA MISE EN PLACE',
+      alignment: AlignmentType.CENTER,
+      spacing: { after: 60 }
+    }),
+    new Paragraph({
+      text: 'DU COMITÉ SOCIAL ET ÉCONOMIQUE (CSE)',
+      alignment: AlignmentType.CENTER,
       spacing: { after: 400 }
     })
   );
   
   // ENTRE
   paragraphs.push(
+    new Paragraph({
+      text: '–(supprimer si c\'est une DUE garder que le paragraphe ci-dessous)–',
+      italics: true,
+      spacing: { before: 200, after: 100 }
+    }),
     new Paragraph({
       text: 'ENTRE :',
       bold: true,
@@ -83,6 +115,11 @@ async function generateCompleteDocument(data) {
   // SYNDICATS
   if (data.syndicats && data.syndicats.length > 0) {
     paragraphs.push(
+      new Paragraph({
+        text: '–(supprimer si c\'est une DUE)–',
+        italics: true,
+        spacing: { before: 200, after: 100 }
+      }),
       new Paragraph({
         text: 'ET :',
         bold: true,
@@ -132,6 +169,11 @@ async function generateCompleteDocument(data) {
         new TextRun({ text: data.date_invitation_os || '', bold: true }),
         new TextRun({ text: '.' })
       ],
+      spacing: { after: 100 }
+    }),
+    new Paragraph({
+      text: '—Si DUE, garder le paragraphe ci-dessous et rajouter la négation.—',
+      italics: true,
       spacing: { after: 100 }
     }),
     new Paragraph({
@@ -188,6 +230,11 @@ async function generateCompleteDocument(data) {
         new TextRun({ text: data.nom_entreprise || '', bold: true }),
         new TextRun({ text: '.' })
       ],
+      spacing: { after: 100 }
+    }),
+    new Paragraph({
+      text: '–Si DUE changer « le présent accord » par la décision–',
+      italics: true,
       spacing: { after: 100 }
     }),
     new Paragraph({
@@ -344,6 +391,15 @@ async function generateCompleteDocument(data) {
   // Tables
   if (data.colleges && Object.keys(data.colleges).length > 0) {
     paragraphs.push(...createGenreTable(data));
+    
+    // Texte entre les tables
+    paragraphs.push(
+      new Paragraph({
+        text: 'Conformément aux dispositions légales en vigueur, le nombre de Représentant du personnel à élire au CSE est de :',
+        spacing: { before: 100, after: 100 }
+      })
+    );
+    
     paragraphs.push(...createSiegesTable(data));
   }
   
@@ -376,6 +432,11 @@ async function generateCompleteDocument(data) {
     }),
     new Paragraph({
       text: 'Par application de l\'article L. 2314-23 du code du travail, pour les salariés mis à disposition qui remplissent les conditions mentionnées au 2° de l\'article L.1111-2 du code du travail, la condition de présence dans l\'entreprise utilisatrice est de douze mois continus pour y être électeur.',
+      spacing: { after: 100 }
+    }),
+    new Paragraph({
+      text: '—Dans le paragraphe ci-dessous, enlever la négation si c\'est le cas et préciser quelle(s) entreprise(s) et combien de personnes.—',
+      italics: true,
       spacing: { after: 100 }
     }),
     new Paragraph({
@@ -569,6 +630,11 @@ async function generateCompleteDocument(data) {
       spacing: { after: 100 }
     }),
     new Paragraph({
+      text: '—En cas de collège unique, ou un siège par collège supprimer la phrase ci-dessous.—',
+      italics: true,
+      spacing: { after: 100 }
+    }),
+    new Paragraph({
       text: 'Les listes sont composées alternativement d\'un candidat de chaque sexe jusqu\'à épuisement des candidats d\'un des deux sexes. Ces règles s\'appliquent à la liste de candidature pour le scrutin des élus titulaires et le scrutin des élus suppléants pour le premier tour et le second tour des élections professionnelles à l\'exception des candidatures libres au second tour.',
       spacing: { after: 200 }
     })
@@ -580,6 +646,11 @@ async function generateCompleteDocument(data) {
       text: 'ARTICLE 8 - MODALITÉS DE VOTE',
       heading: HeadingLevel.HEADING_2,
       spacing: { before: 400, after: 200 }
+    }),
+    new Paragraph({
+      text: '—Si DUE changer au présent PAP par à la présente décision—',
+      italics: true,
+      spacing: { after: 100 }
     }),
     new Paragraph({
       text: '8.1 Recours au vote électronique',
@@ -723,6 +794,11 @@ async function generateCompleteDocument(data) {
       text: 'ARTICLE 9 - BUREAU DE VOTE',
       heading: HeadingLevel.HEADING_2,
       spacing: { before: 400, after: 200 }
+    }),
+    new Paragraph({
+      text: '—Si vous avez 2 collèges, et que les OS sont présents à la réunion vous pouvez négocier un bureau de vote unique et par conséquent changer le paragraphe ci-après.—',
+      italics: true,
+      spacing: { after: 100 }
     }),
     new Paragraph({
       text: 'Compte tenu de l\'organisation par vote électronique, un bureau de vote par collège sera mis en place pour les deux tours de scrutin.',
@@ -947,7 +1023,10 @@ async function generateCompleteDocument(data) {
       spacing: { before: 400, after: 200 }
     }),
     new Paragraph({
-      text: 'La durée des mandats est légalement fixée à 4 années.',
+      children: [
+        new TextRun({ text: 'La durée des mandats est légalement fixée à 4 années. ' }),
+        new TextRun({ text: '(Modifier si ce n\'est pas votre cas, ne peut être inférieur à 2 ans)' })
+      ],
       spacing: { after: 100 }
     }),
     new Paragraph({
@@ -1031,9 +1110,14 @@ async function generateCompleteDocument(data) {
   // ARTICLE 15
   paragraphs.push(
     new Paragraph({
-      text: 'ARTICLE 15 - DÉPÔT ET PUBLICITÉ DU PROTOCOLE',
+      text: 'ARTICLE 15 - DÉPÔT ET PUBLICITÉ DU PROTOCOLE (OU DE LA DÉCISION)',
       heading: HeadingLevel.HEADING_2,
       spacing: { before: 400, after: 200 }
+    }),
+    new Paragraph({
+      text: '—Si DUE supprimer les 3 paragraphes ci-dessous puis changer le présent accord en La décision—',
+      italics: true,
+      spacing: { after: 100 }
     }),
     new Paragraph({
       text: 'Le présent protocole d\'accord sera notifié, par lettre recommandée avec avis de réception ou par courrier remis en mains propres contre récépissé, à l\'ensemble des organisations syndicales ayant participé à la négociation du présent accord, signataires ou non.',
