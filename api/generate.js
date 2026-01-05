@@ -69,7 +69,7 @@ async function generateCompleteDocument(data) {
     }),
     new Paragraph({
       children: [
-        new TextRun({ text: '–OU (garder la mention qui correspond à votre situation) –', font: 'Roboto',
+        new TextRun({ text: '–OU (garder la mention qui correspond à votre situation)–', font: 'Roboto',
           italics: true
         })
       ],
@@ -113,7 +113,7 @@ async function generateCompleteDocument(data) {
       children: [
         new TextRun({ font: 'Roboto', text: 'La société ' }),
         new TextRun({ font: 'Roboto', text: data.nom_entreprise || '', bold: true }),
-        new TextRun({ font: 'Roboto', text: `, domiciliée au ${data.adresse || ''}, immatriculée au Registre du Commerce et des Sociétés de ${data.ville || ''} sous le numéro ${data.siret || ''} au capital de ${data.capital_social || ''} Euros, est représentée par ${data.dirigeant_nom || ''}, agissant en qualité de ${data.dirigeant_poste || ''} et ci-après dénommée la « Société ».` })
+        new TextRun({ font: 'Roboto', text: `, domiciliée au ${data.adresse || ''}, immatriculée au Registre du Commerce et des Sociétés de ${data.ville || ''} sous le numéro ${data.siret || ''} au capital de ${data.capital_social || ''} Euros, est représentée par ${data.personne_nom_complet || data.dirigeant_nom || ''}, agissant en qualité de ${data.dirigeant_poste || ''} et ci-après dénommée la « Société ».` })
       ],
       spacing: { after: 200 }
     })
@@ -158,6 +158,19 @@ async function generateCompleteDocument(data) {
           ]
         })
       );
+      
+      // CORRECCIÓN 3: Agregar información del representante sindical
+      if (s.representante_prenom && s.representante_nom) {
+        paragraphs.push(
+          new Paragraph({
+            children: [
+              new TextRun({ font: 'Roboto', text: `   ${s.representante_prenom} ${s.representante_nom}` }),
+              new TextRun({ font: 'Roboto', text: ' en sa qualité de représentant(e) syndical(e)', italics: true })
+            ],
+            spacing: { left: 360 }
+          })
+        );
+      }
     });
     
     paragraphs.push(new Paragraph({ text: '', spacing: { after: 200 } }));
@@ -880,16 +893,31 @@ async function generateCompleteDocument(data) {
     }),
     new Paragraph({
       children: [
+        new TextRun({ font: 'Roboto', text: 'Les listes sont composées alternativement d\'un candidat de chaque sexe jusqu\'à épuisement des candidats d\'un des deux sexes. Ces règles s\'appliquent à la liste de candidature pour le scrutin des élus titulaires et le scrutin des élus suppléants pour le premier tour et le second tour des élections professionnelles à l\'exception des candidatures libres au second tour.',
+          font: 'Roboto'
+        })
+      ],
+      spacing: { after: 100 }
+    }),
+    // CORRECCIÓN 6: Mover la frase después del párrafo anterior
+    new Paragraph({
+      children: [
         new TextRun({ font: 'Roboto', text: '—En cas de collège unique, ou un siège par collège supprimer la phrase ci-dessous.—',
                     italics: true
         })
       ],
       spacing: { after: 100 }
     }),
+    // CORRECCIÓN 6: Agregar nuevo párrafo con información de composición
     new Paragraph({
       children: [
-        new TextRun({ text: 'Les listes sont composées alternativement d\'un candidat de chaque sexe jusqu\'à épuisement des candidats d\'un des deux sexes. Ces règles s\'appliquent à la liste de candidature pour le scrutin des élus titulaires et le scrutin des élus suppléants pour le premier tour et le second tour des élections professionnelles à l\'exception des candidatures libres au second tour.', font: 'Roboto'
-        })
+        new TextRun({ font: 'Roboto', text: 'Conformément aux effectifs de ' }),
+        new TextRun({ font: 'Roboto', text: data.nom_entreprise || '', bold: true }),
+        new TextRun({ font: 'Roboto', text: ', chaque liste devra présenter alternativement ' }),
+        new TextRun({ font: 'Roboto', text: calculateFemmesTotal(data), bold: true }),
+        new TextRun({ font: 'Roboto', text: ' femmes et ' }),
+        new TextRun({ font: 'Roboto', text: calculateHommesTotal(data), bold: true }),
+        new TextRun({ font: 'Roboto', text: ' hommes.' })
       ],
       spacing: { after: 200 }
     })
@@ -905,14 +933,6 @@ async function generateCompleteDocument(data) {
       heading: HeadingLevel.HEADING_2,
       bold: true,
       spacing: { before: 400, after: 200 }
-    }),
-    new Paragraph({
-      children: [
-        new TextRun({ text: '—Si DUE changer au présent PAP par à la présente décision—', font: 'Roboto',
-          italics: true
-        })
-      ],
-      spacing: { after: 100 }
     }),
     new Paragraph({
       children: [
@@ -971,6 +991,15 @@ async function generateCompleteDocument(data) {
         new TextRun({ font: 'Roboto', text: 'L\'URL retenue pour le site de vote est : ' }),
         new TextRun({ font: 'Roboto', text: data.plateforme_vote_url || '', bold: true }),
         new TextRun({ font: 'Roboto', text: '.cse.electis.app' })
+      ],
+      spacing: { after: 100 }
+    }),
+    // CORRECCIÓN 7: Mover la frase antes del párrafo siguiente
+    new Paragraph({
+      children: [
+        new TextRun({ text: '—Si DUE changer au présent PAP par à la présente décision—', font: 'Roboto',
+          italics: true
+        })
       ],
       spacing: { after: 100 }
     }),
@@ -1216,12 +1245,13 @@ async function generateCompleteDocument(data) {
     }),
     new Paragraph({
       children: [
-        new TextRun({ font: 'Roboto', text: 'Le prestataire formera le bureau de vote à l\'utilisation des outils du site de vote qui lui permettront d\'assurer ses missions. Lors de cette formation, chaque membre du bureau réalisera une élection fictive.',
+        new TextRun({ font: 'Roboto', text: 'Le prestataire formera le bureau de vote à l\'utilisation des outils du site de vote qui lui permettront d\'assurer ses missions.',
           font: 'Roboto'
         })
       ],
       spacing: { after: 100 }
     }),
+    // CORRECCIÓN 8: Eliminada la línea sobre formación ficticia
     new Paragraph({
       children: [
         new TextRun({ font: 'Roboto', text: 'Durant la période de vote, l\'ensemble des suffrages exprimés sont chiffrés dès leur expression et conservés dans le système de vote. Seuls les détenteurs des clés de déchiffrement pourront, après clôture, déchiffrer les suffrages pour accéder aux résultats.',
@@ -1467,6 +1497,22 @@ async function generateCompleteDocument(data) {
         })
       ],
       spacing: { left: 360, after: 100 }
+    }),
+    // CORRECCIÓN 9: Agregar nuevo párrafo sobre logos y fotos
+    new Paragraph({
+      children: [
+        new TextRun({ font: 'Roboto', text: 'Par ailleurs, les listes déposées peuvent être accompagnées d\'un logo et / ou d\'une photo, qui seront – le cas échéant – affichés sur le site de vote sécurisé.',
+          font: 'Roboto'
+        })
+      ],
+      spacing: { after: 100 }
+    }),
+    new Paragraph({
+      children: [
+        new TextRun({ text: 'Dans ce cas, le logo devra respecter les prérequis suivants : format jpg de 500 KO au maximum, taille de 100 pixels x 100 pixels. La photo devra respecter les prérequis suivants : format jpg de 500 KO au maximum, taille de 50 pixels x 50 pixels.', font: 'Roboto'
+        })
+      ],
+      spacing: { after: 100 }
     }),
     new Paragraph({
       children: [
@@ -1865,6 +1911,24 @@ function createSiegesTable(data) {
 // ========================================
 // HELPERS
 // ========================================
+
+function calculateFemmesTotal(data) {
+  if (!data.colleges) return '0';
+  let total = 0;
+  for (const college of Object.values(data.colleges)) {
+    total += parseInt(college.femmes || 0);
+  }
+  return String(total);
+}
+
+function calculateHommesTotal(data) {
+  if (!data.colleges) return '0';
+  let total = 0;
+  for (const college of Object.values(data.colleges)) {
+    total += parseInt(college.hommes || 0);
+  }
+  return String(total);
+}
 
 function sanitizeFilename(filename) {
   return (filename || 'document').replace(/[^a-z0-9]/gi, '_').toLowerCase();
